@@ -273,9 +273,13 @@ th{background:#f7f9fc;color:#42526a;font-size:.84rem;text-transform:uppercase;le
 tr:last-child td{border-bottom:0}
 .tag{display:inline-block;padding:4px 9px;border-radius:999px;font-size:.8rem;font-weight:750}
 .tag.good{background:#e7f6ec;color:#166534} .tag.warn{background:#fff4dd;color:#92400e}
-.pill-tabs{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0 18px}
-.tab-btn{border:1px solid var(--line);background:white;color:#334155;padding:9px 13px;border-radius:999px;font-weight:700;cursor:pointer}
-.tab-btn.active{background:var(--navy);color:#fff;border-color:var(--navy)}
+.tab-instruction{display:flex;align-items:center;gap:8px;margin:18px 0 8px;color:var(--blue);font-size:.94rem;font-weight:750}
+.tab-instruction span{font-size:1.2rem;line-height:1}
+.pill-tabs{display:flex;gap:10px;flex-wrap:wrap;margin:8px 0 18px;padding:12px;background:#eef4ff;border:1px solid #cbdaf5;border-radius:14px}
+.tab-btn{flex:1 1 200px;max-width:100%;min-height:44px;border:2px solid #7295ca;background:white;color:var(--blue);padding:10px 14px;border-radius:10px;font-family:inherit;font-size:.94rem;line-height:1.35;font-weight:750;cursor:pointer;box-shadow:0 2px 5px rgba(15,39,71,.08);transition:background .16s ease,border-color .16s ease,box-shadow .16s ease,transform .16s ease}
+.tab-btn.active{background:var(--navy);color:#fff;border-color:var(--navy);box-shadow:0 0 0 3px rgba(15,39,71,.13)}
+@media(hover:hover){.tab-btn:not(.active):hover{background:#e2edff;border-color:var(--blue);box-shadow:0 4px 10px rgba(37,99,235,.16);transform:translateY(-1px)}}
+.tab-btn:active{transform:translateY(1px)}
 .tab-panel{display:none} .tab-panel.active{display:block}
 details{background:white;border:1px solid var(--line);border-radius:14px;padding:14px 16px}
 details+details{margin-top:10px} summary{cursor:pointer;font-weight:780}
@@ -295,7 +299,7 @@ details p, details li{color:#526178}
 .close{position:absolute;right:22px;top:17px;background:white;border:0;border-radius:999px;width:42px;height:42px;font-size:25px;cursor:pointer}
 @media(max-width:950px){.grid-4{grid-template-columns:repeat(2,1fr)}.grid-3{grid-template-columns:1fr 1fr}.grid-2{grid-template-columns:1fr}}
 @media(max-width:650px){.grid-4,.grid-3{grid-template-columns:1fr}.hero{padding-top:54px}.kpi-strip{grid-template-columns:1fr}}
-@media print{.topbar,.pill-tabs,.close{display:none!important}.tab-panel{display:block!important}body{background:white}.card,.figure-card{box-shadow:none;break-inside:avoid}}
+@media print{.topbar,.pill-tabs,.tab-instruction,.close{display:none!important}.tab-panel{display:block!important}body{background:white}.card,.figure-card{box-shadow:none;break-inside:avoid}}
 
 a:focus-visible,button:focus-visible,.zoomable:focus-visible,summary:focus-visible{outline:3px solid #2563eb;outline-offset:4px}
 .lightbox{flex-direction:column;padding:16px}
@@ -520,8 +524,9 @@ a:focus-visible,button:focus-visible,.zoomable:focus-visible,summary:focus-visib
 
   <div class="card" style="margin-top:18px">
     <h3 style="margin-top:0">Bootstrap mean-salary analysis</h3>
-    <p class="note">10,000 replications with replacement, using 7,800 Hybrid and 6,929 Remote observations per replication. Use the tabs to switch among the three figures.</p>
-    <div class="pill-tabs" role="tablist" aria-label="Bootstrap figure views">
+    <p class="note">10,000 replications with replacement, using 7,800 Hybrid and 6,929 Remote observations per replication.</p>
+    <p id="q2-tabs-hint" class="tab-instruction"><span aria-hidden="true">↔</span> Click a tab below to switch plots.</p>
+    <div class="pill-tabs" role="tablist" aria-label="Work-mode bootstrap plots" aria-describedby="q2-tabs-hint">
       <button class="tab-btn active" onclick="showTab('q2','q2a',this)" id="q2a-tab" role="tab" aria-controls="q2a" aria-selected="true" tabindex="0" data-group="q2" data-panel="q2a">Mean salaries</button>
       <button class="tab-btn" onclick="showTab('q2','q2b',this)" id="q2b-tab" role="tab" aria-controls="q2b" aria-selected="false" tabindex="-1" data-group="q2" data-panel="q2b">Mean difference</button>
       <button class="tab-btn" onclick="showTab('q2','q2c',this)" id="q2c-tab" role="tab" aria-controls="q2c" aria-selected="false" tabindex="-1" data-group="q2" data-panel="q2c">Standardized mean difference</button>
@@ -619,8 +624,9 @@ a:focus-visible,button:focus-visible,.zoomable:focus-visible,summary:focus-visib
 
   <div class="card" style="margin-top:18px">
     <h3 style="margin-top:0">Bootstrap distributions of mean salary</h3>
-    <p class="note">10,000 replications with replacement, using the original group sizes: Bachelor's 2,978, Master's 1,084, and Professional 301. Use the tabs to switch among the three figures.</p>
-    <div class="pill-tabs" role="tablist" aria-label="Bootstrap figure views">
+    <p class="note">10,000 replications with replacement, using the original group sizes: Bachelor's 2,978, Master's 1,084, and Professional 301.</p>
+    <p id="q3-tabs-hint" class="tab-instruction"><span aria-hidden="true">↔</span> Click a tab below to switch plots.</p>
+    <div class="pill-tabs" role="tablist" aria-label="Education bootstrap plots" aria-describedby="q3-tabs-hint">
       <button class="tab-btn active" onclick="showTab('q3','q3a',this)" id="q3a-tab" role="tab" aria-controls="q3a" aria-selected="true" tabindex="0" data-group="q3" data-panel="q3a">Mean salaries</button>
       <button class="tab-btn" onclick="showTab('q3','q3b',this)" id="q3b-tab" role="tab" aria-controls="q3b" aria-selected="false" tabindex="-1" data-group="q3" data-panel="q3b">Pairwise mean differences</button>
       <button class="tab-btn" onclick="showTab('q3','q3c',this)" id="q3c-tab" role="tab" aria-controls="q3c" aria-selected="false" tabindex="-1" data-group="q3" data-panel="q3c">Standardized mean differences</button>
