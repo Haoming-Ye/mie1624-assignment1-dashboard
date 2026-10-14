@@ -535,17 +535,21 @@ a:focus-visible,button:focus-visible,.zoomable:focus-visible,summary:focus-visib
   </div>
 
   <div class="card" style="margin-top:18px">
-    <h3 style="margin-top:0">Two-sample t-tests</h3><p>We test equal population mean salaries (H₀: μ<sub>H</sub> = μ<sub>R</sub>) against a difference in either direction (Hₐ: μ<sub>H</sub> ≠ μ<sub>R</sub>), using α = 0.05.</p>
-    <div class="table-wrap"><table id="workmode-tests-table"><thead><tr><th>Method</th><th>Equal variances assumed?</th><th>SE ($)</th><th>t</th><th>p-value</th><th>Decision at α = 0.05</th></tr></thead><tbody><tr><td>Manual pooled t-test</td><td>Yes</td><td>6,524.29</td><td>-2.591158</td><td>0.009575</td><td><span class="tag good">Reject H₀</span></td></tr><tr><td>Built-in pooled t-test</td><td>Yes</td><td>6,524.29</td><td>-2.591158</td><td>0.009575</td><td><span class="tag good">Reject H₀</span></td></tr><tr><td>Welch t-test</td><td>No</td><td>6,616.99</td><td>-2.554860</td><td>0.010634</td><td><span class="tag good">Reject H₀</span></td></tr><tr><td>Bootstrap-based t-test</td><td>No</td><td>6,621.36</td><td>-2.553174</td><td>0.010686</td><td><span class="tag good">Reject H₀</span></td></tr></tbody></table>
+    <h3 style="margin-top:0">Tests of mean salary differences</h3><p>We test equal population mean salaries (H₀: μ<sub>H</sub> = μ<sub>R</sub>) against a difference in either direction (Hₐ: μ<sub>H</sub> ≠ μ<sub>R</sub>), using α = 0.05.</p>
+    <div class="table-wrap"><table id="workmode-tests-table"><thead><tr><th>Method</th><th>Equal variances assumed?</th><th>SE ($)</th><th>t</th><th>p-value</th><th>Decision at α = 0.05</th></tr></thead><tbody><tr><td>Manual pooled t-test</td><td>Yes</td><td>6,524.29</td><td>-2.591158</td><td>0.009575</td><td><span class="tag good">Reject H₀</span></td></tr><tr><td>Built-in pooled t-test</td><td>Yes</td><td>6,524.29</td><td>-2.591158</td><td>0.009575</td><td><span class="tag good">Reject H₀</span></td></tr><tr><td>Welch t-test</td><td>No</td><td>6,616.99</td><td>-2.554860</td><td>0.010634</td><td><span class="tag good">Reject H₀</span></td></tr><tr><td>Bootstrap-SE t approximation</td><td>No</td><td>6,621.36</td><td>-2.553174</td><td>0.010686</td><td><span class="tag good">Reject H₀</span></td></tr><tr><td>Null-bootstrap comparison</td><td>No</td><td>6,621.36</td><td>-2.553174</td><td>0.013699</td><td><span class="tag good">Reject H₀</span></td></tr></tbody></table>
     </div>
     <p><strong>What the pooled p-value means:</strong> assuming equal population mean salaries and the test assumptions, a t-statistic at least as extreme in either direction as ±2.591 has a probability of about 0.96%. Since p &lt; 0.05, we reject equal population means.</p>
-    <p><strong>Bootstrap-based t-test:</strong> the standard deviation of the 10,000 bootstrap mean differences estimates the standard error ($6,621.36); it is not divided by √10,000. The observed mean difference is divided by this SE, then compared with a t distribution using Welch’s original-data degrees of freedom (13,092.83). This is an approximate t-based inference.</p>
+    <p><strong>Bootstrap-SE t approximation:</strong> the standard deviation of the 10,000 bootstrap mean differences estimates the standard error ($6,621.36); it is not divided by √10,000. The observed mean difference is divided by this SE, then compared with a t distribution using Welch’s original-data degrees of freedom (13,092.83). This is an approximate t-based inference.</p>
+    <p><strong>Null-bootstrap comparison:</strong> we create a separate null-centered copy of the bootstrap differences by subtracting the observed Hybrid − Remote mean difference: D<sub>0</sub>* = D* − D<sub>observed</sub>. Dividing the null differences by the same fixed bootstrap SE puts them on the observed statistic’s scale (t = -2.553174). Of 10,000 null statistics, 136 are at least as extreme in absolute value. The two-sided simulation p-value is (136 + 1) / (10,000 + 1) = <strong>0.013699</strong>. This also rejects equal population means at 5%, supporting the same conclusion.</p>
     <p class="note">Welch’s method and the separate-group bootstrap allow different population variances and produce closely matching standard errors. All methods use the same survey data, so agreement does not resolve extreme-value accuracy, representativeness, or confounding.</p>
-    <details style="margin-top:14px"><summary>T-test assumptions and robustness</summary>
+    <details style="margin-top:14px"><summary>Calculation details and assumptions</summary>
+      <h4>How the null-bootstrap comparison works</h4>
+      <p>For a difference in arithmetic means, subtracting the observed difference is equivalent to applying the same bootstrap draws to groups shifted to a common mean, while preserving each group’s empirical spread. Equal population variances are therefore not imposed. The original bootstrap differences are retained for the figures and percentile confidence interval.</p>
+      <p>The observed and null differences use one fixed bootstrap SE; comparing the unscaled differences gives the same extreme count. A separate SE is not estimated for each replication. Both tails are counted directly, so no extra multiplication by 2 is needed. The +1 correction accounts for finite simulation and avoids reporting a zero simulation p-value. The empirical p-value and the theoretical-t approximation differ because they use different reference distributions and the simulation is finite.</p>
+      <h4>T-test assumptions and robustness</h4>
       <p>The exact pooled t-test reference distribution assumes independent responses, normally distributed salaries within each population, and equal population variances. The descriptive statistics indicate strong right skewness, so normality of individual salaries is not asserted here. Independence is assumed and cannot be verified from these data alone.</p>
       <p>The large groups (7,800 Hybrid and 6,929 Remote respondents) support a normal approximation for the sampling distribution of the mean difference through the Central Limit Theorem, although extreme salaries can affect its accuracy. Welch’s method relaxes equal variance while still relying on independence and an adequate sampling-distribution approximation. The results are interpreted as approximate inference.</p>
-    </details>
-    <details style="margin-top:14px"><summary>Manual pooled calculation details</summary>
+      <h4>Manual pooled calculation details</h4>
       <p>The pooled test estimates one common population variance. Sample variances use n − 1 in the denominator.</p>
       <div class="table-wrap"><table id="manual-calculation-table">
         <thead><tr><th>Step</th><th>Calculation / result</th></tr></thead><tbody>
@@ -710,7 +714,7 @@ a:focus-visible,button:focus-visible,.zoomable:focus-visible,summary:focus-visib
 <footer class="footer">
   <div class="footer-inner">
     <div><strong>Client Analytics Dashboard</strong><br><span style="opacity:.78">Generated from the final Assignment 1 notebook.</span></div>
-    <div style="opacity:.78">Source of truth: ye_1005958297_assignment1.ipynb · Random seed 100 for bootstrap analyses · Updated 8 October 2026</div>
+    <div style="opacity:.78">Source of truth: ye_1005958297_assignment1.ipynb · Random seed 100 for bootstrap analyses · Updated 14 October 2026</div>
   </div>
 </footer>
 
